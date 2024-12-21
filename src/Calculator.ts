@@ -1,17 +1,21 @@
 // Что было плохо и почему:
 // Не соблюдается принцип единой ответственности (по SOLID).
 // Методы класса не связаны общими данными или состоянием, что делает использование класса бессмысленным.
+// Методы дублируют типы - ухудшает читаемость
 
 // Что стало лучше и почему:
 // Убрали избыточность использования класса для простых функций, разделив операции на отдельные модули.
 // Код стал более модульным и соответствующим принципу единой ответственности.
+// Вынесли тип для функции, убрав дублирование, что улучшило читаемость
 
 // Возможно стоит добавить проверку при делении на 0, но это исходя из контекста выполнения функции.
 
-const add = (a: number, b: number): number => a + b;
+type CalcOperation = (a: number, b: number) => number;
 
-const subtract = (a: number, b: number): number => a - b;
+const add: CalcOperation = (a, b) => a + b;
 
-const multiply = (a: number, b: number): number => a * b;
+const subtract: CalcOperation = (a, b) => a - b;
 
-const divide = (a: number, b: number): number => a / b;
+const multiply: CalcOperation = (a, b) => a * b;
+
+const divide: CalcOperation = (a, b) => a / b;
