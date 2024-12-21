@@ -1,4 +1,7 @@
+// Явно указать модификаторы, для улучшения читаемости
+
+
 class DaoCacheConfigProperties {
-  alive: number; // alive cache time in days
-  elements: number; // maximum elements in cache
+  public alive: number; // alive cache time in days
+  public elements: number; // maximum elements in cache
 }
