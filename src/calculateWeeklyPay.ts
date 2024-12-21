@@ -18,7 +18,7 @@ function calculateWeeklyPay(overtime: boolean): number {
   const overTime: number = Math.max(0, tenthsWorked - straightTime);
   const straightPay: number = straightTime * tenthRate;
 
-  const overtimeRate: number = overtime ? OVERTIME_MULTIPLIER : BASE_MULTIPLIER * tenthRate;
+  const overtimeRate: number = (overtime ? OVERTIME_MULTIPLIER : BASE_MULTIPLIER) * tenthRate;
   const overtimePay: number = Math.round(overTime * overtimeRate);
 
   return straightPay + overtimePay;
