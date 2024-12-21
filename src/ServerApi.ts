@@ -1,12 +1,23 @@
+// Что было плохо и почему:
+// Дублирование кода. Это нарушает принцип DRY.
+// Слабая расширяемость: при добавлении новых типов запросов нужно было бы писать отдельный метод для каждого случая,
+// что увеличивает объем кода и снижает его гибкость.
+// Отсутствие явной типизации HTTP-методов, что могло привести к ошибкам при использовании строк вместо стандартных значений.
+
+// Что стало лучше и почему:
+// Создан универсальный метод `sendRequest`, который принимает HTTP-метод, URL и данные запроса. Это устранило дублирование и упростило код.
+// Введен перечисляемый тип `HttpMethod`, который обеспечивает безопасность типов при указании метода HTTP + можно использовать как значение.
+// Стало легче масштабировать код: для нового типа запроса достаточно вызвать `sendRequest` с нужными параметрами.
+// Улучшена читаемость: единый метод делает намерения более понятными, упрощая поддержку и тестирование.
+
+enum HttpMethod {
+  GET = 'GET',
+  POST = 'POST',
+  DELETE = 'DELETE',
+}
+
 class ServerApi {
-  public processAddAccountRequest(url: string, account: TAccount) {
-    return this.fetch('POST', url, account);
+  public sendRequest<T>(method: HttpMethod, url: string, data?: T): unknown {
+    return this.fetch(method, url, data);
   }
-
-  public sendDeleteAccountRequest(url: string, accountId: string) {
-    return this.fetch('DELETE', url, accountId);
-  }
-
-  public requestAuth(url: string, credentials: TCredentials) {
-    return this.fetch('GET', url, credentials);
-  }
+}
