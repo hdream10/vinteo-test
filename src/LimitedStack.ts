@@ -1,11 +1,18 @@
+// Что было плохо и почему:
+// Класс UnlimitedStack реализует метод percentFull, который не имеет смысла для неограниченного стека,
+// что нарушает принцип разделения интерфейсов и увеличивает избыточность кода.
+
+// Что стало лучше и почему:
+// Интерфейс разделен на два интерфейса, каждый из которых теперь соответствует конкретному типу стека.
+// UnlimitedStack реализует только методы, которые имеют смысл для него, и не обязан реализовывать избыточные методы.
+
 interface Stack<T> {
   pop(): T | null;
   push(item: T): void;
+}
+
+interface BoundedStack<T> extends Stack<T> {
   percentFull(): number;
 }
 
-class UnlimitedStack<T> implements Stack<T> {
-  percentFull(): number {
-    return 0;
-  }
-}
+class UnlimitedStack<T> implements Stack<T> {}
