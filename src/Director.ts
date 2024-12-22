@@ -13,14 +13,14 @@ interface ICalendar {
 }
 
 
-class Calendar {
+class Calendar implements ICalendar {
   addEvent(event: unknown): void {
     // some logic to add event
   }
 }
 
 class Director {
-  calendar: Calendar;
+  private calendar: ICalendar;
 
   constructor(calendar: ICalendar) {
     this.calendar = calendar;
