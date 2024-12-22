@@ -1,7 +1,15 @@
-class Car2 {
-  public static readonly COLORS = ['red', 'blue', 'green'];
+// Что было плохо и почему:
+// Использование класса для логики, которая не требует состояния объекта, избыточно.
+// Константы и методы могли быть вынесены без необходимости создавать класс.
 
-  public static isColorAvailable(color: string): boolean {
-    return this.COLORS.includes(color);
-  }
+// Что стало лучше и почему:
+// Заменили класс на простой объект с `enum`, который даёт типизацию и обозначает возможные значения.
+// Использование `enum` упрощает расширение и улучшает читаемость кода.
+
+enum Color {
+  Red = 'red',
+  Blue = 'blue',
+  Green = 'green',
 }
+
+const isColorAvailable = (color: Color): boolean => Object.values(Color).includes(color);

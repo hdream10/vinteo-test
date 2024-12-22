@@ -1,14 +1,21 @@
-class Calculator {
-  public add(a: number, b: number): number {
-    return a + b;
-  }
-  public subtract(a: number, b: number): number {
-    return a - b;
-  }
-  public multiply(a: number, b: number): number {
-    return a * b;
-  }
-  public divide(a: number, b: number): number {
-    return a / b;
-  }
-}
+// Что было плохо и почему:
+// Не соблюдается принцип единой ответственности (по SOLID).
+// Методы класса не связаны общими данными или состоянием, что делает использование класса бессмысленным.
+// Методы дублируют типы - ухудшает читаемость
+
+// Что стало лучше и почему:
+// Убрали избыточность использования класса для простых функций, разделив операции на отдельные модули.
+// Код стал более модульным и соответствующим принципу единой ответственности.
+// Вынесли тип для функции, убрав дублирование, что улучшило читаемость
+
+// Возможно стоит добавить проверку при делении на 0, но это исходя из контекста выполнения функции.
+
+type CalcOperation = (a: number, b: number) => number;
+
+const add: CalcOperation = (a, b) => a + b;
+
+const subtract: CalcOperation = (a, b) => a - b;
+
+const multiply: CalcOperation = (a, b) => a * b;
+
+const divide: CalcOperation = (a, b) => a / b;

@@ -1,15 +1,39 @@
+// Что было плохо и почему:
+// Нарушение принципа единой ответственности.
+// Методы, связанные с потоком, были в классе `ScreenShare`, который выполнял как базовую логику,
+// так и более сложные сценарии, такие как `startPresentationWithoutSound`.
+// Это усложняло понимание и расширение кода
+
+// Что стало лучше и почему:
+// Логика управления стримом вынесена в отдельный класс. Также была добавлена абстракция.
+// Принципы единой ответственности и инверсии зависимостей соблюдены.
+// Это улучшает читаемость кода, масштабируемость и делает код более гибким.
+
+interface IStream {
+  stop: () => void;
+  start: (mediaStream: MediaStream) => void;
+  muteAudio: () => void;
+}
+
+class Stream implements IStream {
+  stop() {}
+  start(mediaStream: MediaStream) {}
+  muteAudio() {}
+}
+
 class ScreenShare {
-  startPresentationWithoutSound(mediaStream: MediaStream, isExistsAudioTracks: boolean) {
-    this.stopPresentation();
+  private stream: IStream;
 
-    this.startPresentation(mediaStream);
-
-    if (isExistsAudioTracks) {
-      this.muteAudio();
-    }
+  constructor(stream: IStream) {
+    this.stream = stream;
   }
 
-  stopPresentation() {}
-  startPresentation(mediaStream: MediaStream) {}
-  muteAudio() {}
+  startPresentationWithoutSound(mediaStream: MediaStream, isExistsAudioTracks: boolean) {
+    this.stream.stop();
+    this.stream.start(mediaStream);
+
+    if (isExistsAudioTracks) {
+      this.stream.muteAudio();
+    }
+  }
 }

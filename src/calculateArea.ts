@@ -1,21 +1,39 @@
-enum ShapeType {
-  Circle,
-  Square,
+// Что было плохо и почему:
+// 1. Использование `switch-case` для определения площади разных фигур усложняет масштабируемость.
+// Если добавить новые фигуры, потребуется изменить существующую функцию, что нарушает принцип открытости/закрытости из SOLID.
+// 2. Функция принимает два параметра, но один из них служит как универсальный вход (радиус или сторона), что неявно и может привести к путанице.
+// 3. Тип `ShapeType` связан с конкретной реализацией, что ограничивает возможность масштабирования.
+
+// Что стало лучше и почему:
+// 1. Реализовали полиморфизм: каждая фигура имеет собственный класс с методом `calculateArea`.
+// Это делает добавление новых фигур простым и безопасным, без изменений существующего кода.
+// 2. Убрали необходимость неявного использования одного параметра для разных случаев, сделав код более понятным и устойчивым.
+// 3. Код стал соответствовать принципам SOLID, улучшилась читаемость и поддерживаемость.
+
+abstract class Shape {
+  abstract calculateArea(): number;
 }
 
-function calculateArea(shape: ShapeType, radiusOrSide: number): number {
-  let area = 0;
-
-  switch (shape) {
-    case ShapeType.Circle:
-      area = Math.PI * Math.pow(radiusOrSide, 2);
-      break;
-    case ShapeType.Square:
-      area = Math.pow(radiusOrSide, 2);
-      break;
+class Circle extends Shape {
+  constructor(private radius: number) {
+    super();
   }
 
-  return area;
+  calculateArea(): number {
+    return Math.PI * Math.pow(this.radius, 2);
+  }
 }
 
-console.log(calculateArea(ShapeType.Circle, 5)); // Output: 78.54
+class Square extends Shape {
+  constructor(private side: number) {
+    super();
+  }
+
+  calculateArea(): number {
+    return Math.pow(this.side, 2);
+  }
+}
+
+const circle = new Circle(5);
+
+console.log(circle.calculateArea()); 
